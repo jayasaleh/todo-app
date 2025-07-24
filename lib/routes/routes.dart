@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:to_do/features/authentication/presentation/screens/login_screen.dart';
 import 'package:to_do/features/authentication/presentation/screens/register_screen.dart';
 import 'package:to_do/features/task_management/presentation/screens/main_screen.dart';
@@ -9,7 +8,7 @@ import 'package:to_do/routes/go_router_refresh_stream.dart';
 
 part 'routes.g.dart';
 
-enum AppRoute { main, login, register }
+enum AppRoutes { main, login, register }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
@@ -19,7 +18,7 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
 GoRouter goRouter(GoRouterRef ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/login',
     debugLogDiagnostics: true,
     redirect: (context, state) {
       final isLoggedIn = firebaseAuth.currentUser != null;
@@ -36,17 +35,17 @@ GoRouter goRouter(GoRouterRef ref) {
     routes: [
       GoRoute(
         path: '/main',
-        name: AppRoute.main.name,
+        name: AppRoutes.main.name,
         builder: (context, state) => const MainScreen(),
       ),
       GoRoute(
         path: '/login',
-        name: AppRoute.login.name,
+        name: AppRoutes.login.name,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/register',
-        name: AppRoute.register.name,
+        name: AppRoutes.register.name,
         builder: (context, state) => const RegisterScreen(),
       ),
     ],
