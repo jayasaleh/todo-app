@@ -21,7 +21,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passwordEditingController = TextEditingController();
 
   bool isChecked = false;
-
+  bool _obscurePassword = true;
   void _validateDetails() {
     String email = _emailEditingController.text.trim();
     String password = _passwordEditingController.text.trim();
@@ -85,8 +85,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 CommonTextField(
                   hintText: 'Enter Password...',
                   textInputType: TextInputType.text,
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   controller: _passwordEditingController,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
                 SizedBox(height: SizeConfig.getProportionateScreenHeight(15)),
                 Row(

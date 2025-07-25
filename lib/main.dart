@@ -21,16 +21,16 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 43, 1, 149),
+          seedColor: const Color.fromARGB(255, 37, 0, 132),
         ),
         appBarTheme: AppBarTheme().copyWith(
-          backgroundColor: const Color.fromARGB(255, 1, 19, 132),
+          backgroundColor: const Color.fromARGB(255, 36, 21, 251),
           centerTitle: true,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData().copyWith(
-          backgroundColor: Colors.blue,
+          backgroundColor: const Color.fromARGB(255, 36, 21, 251),
           selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.black,
+          unselectedItemColor: Colors.white70,
         ),
       ),
     );
