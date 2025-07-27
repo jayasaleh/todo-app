@@ -31,6 +31,7 @@ class TitleDescription extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: AppStyles.normalTextStyle.copyWith(fontSize: 14),
             prefixIcon: Icon(prefixIcon),
             filled: true,
             fillColor: Colors.grey[200],

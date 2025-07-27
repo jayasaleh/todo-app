@@ -24,11 +24,11 @@ class MyApp extends ConsumerWidget {
           seedColor: const Color.fromARGB(255, 37, 0, 132),
         ),
         appBarTheme: AppBarTheme().copyWith(
-          backgroundColor: const Color.fromARGB(255, 36, 21, 251),
+          backgroundColor: const Color.fromARGB(255, 36, 138, 246),
           centerTitle: true,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData().copyWith(
-          backgroundColor: const Color.fromARGB(255, 36, 21, 251),
+          backgroundColor: const Color.fromARGB(255, 36, 138, 246),
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white70,
         ),

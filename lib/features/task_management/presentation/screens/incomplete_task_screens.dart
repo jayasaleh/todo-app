@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:to_do/features/authentication/presentation/controllers/auth_controller.dart';
 
 class IncompleteTaskScreens extends ConsumerStatefulWidget {
   const IncompleteTaskScreens({super.key});
@@ -12,6 +13,15 @@ class IncompleteTaskScreens extends ConsumerStatefulWidget {
 class _IncompleteTaskScreensState extends ConsumerState<IncompleteTaskScreens> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('Incomplete Tasks')));
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            ref.read(authControllerProvider.notifier).signOut();
+          },
+          child: const Text('Sign Out'),
+        ),
+      ),
+    );
   }
 }
