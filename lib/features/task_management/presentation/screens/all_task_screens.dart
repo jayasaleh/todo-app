@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do/common_widgets/async_value_ui.dart';
 import 'package:to_do/common_widgets/async_value_widget.dart';
 import 'package:to_do/features/authentication/data/auth_repository.dart';
-import 'package:to_do/features/authentication/presentation/controllers/auth_controller.dart';
 import 'package:to_do/features/task_management/data/firestore_repository.dart';
 import 'package:to_do/features/task_management/domain/task.dart';
 import 'package:to_do/features/task_management/presentation/widgets/task_item.dart';
-import 'package:to_do/utils/app_styles.dart';
 import 'package:to_do/utils/app_styles.dart';
 import 'package:to_do/utils/size_config.dart';
 
@@ -32,7 +30,10 @@ class _AllTaskScreensState extends ConsumerState<AllTaskScreens> {
       appBar: AppBar(
         title: Text(
           'My Task Today',
-          style: AppStyles.headingTextStyle.copyWith(color: Colors.white),
+          style: AppStyles.headingTextStyle.copyWith(
+            color: Colors.white,
+            fontSize: 20,
+          ),
         ),
       ),
       body: AsyncValueWidget<List<Task>>(
@@ -40,13 +41,11 @@ class _AllTaskScreensState extends ConsumerState<AllTaskScreens> {
         data: (tasks) {
           return tasks.isEmpty
               ? const Center(child: Text('No task yet...'))
-              : ListView.separated(
+              : ListView.builder(
                   itemBuilder: (context, index) {
                     final task = tasks[index];
                     return TaskItem(task);
                   },
-                  separatorBuilder: (context, height) =>
-                      const Divider(height: 2, color: Colors.blue),
                   itemCount: tasks.length,
                 );
         },

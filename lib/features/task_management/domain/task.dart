@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
   final String id;
   final String title;
   final String description;
   final String priority;
-  final String date;
+  final Timestamp date;
   final bool isComplete;
 
   Task({
@@ -43,7 +45,7 @@ class Task {
     String? title,
     String? description,
     String? priority,
-    String? date,
+    Timestamp? date,
     bool? isComplete,
   }) {
     return Task(
@@ -73,7 +75,7 @@ class Task {
       title: map['title'],
       description: map['description'],
       priority: map['priority'],
-      date: map['date'],
+      date: map['date'] as Timestamp,
       isComplete: map['isComplete'],
     );
   }
