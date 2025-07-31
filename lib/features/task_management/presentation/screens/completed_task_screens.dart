@@ -5,7 +5,7 @@ import 'package:to_do/common_widgets/async_value_widget.dart';
 import 'package:to_do/features/authentication/data/auth_repository.dart';
 import 'package:to_do/features/task_management/data/firestore_repository.dart';
 import 'package:to_do/features/task_management/domain/task.dart';
-import 'package:to_do/features/task_management/presentation/widgets/task_item.dart';
+import 'package:to_do/features/task_management/presentation/widgets/task_item_done.dart';
 import 'package:to_do/utils/app_styles.dart';
 import 'package:to_do/utils/size_config.dart';
 
@@ -88,9 +88,10 @@ class _CompletedTaskScreensState extends ConsumerState<CompletedTaskScreens> {
                     ),
                   ],
                 ),
+
                 child: Stack(
                   children: [
-                    TaskItem(task),
+                    TaskItemDone(task),
                     Positioned(
                       top: 8,
                       right: 8,

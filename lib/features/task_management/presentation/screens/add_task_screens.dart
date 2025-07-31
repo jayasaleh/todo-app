@@ -72,7 +72,11 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreens> {
               // Task Title
               Text(
                 'Task Title',
-                style: AppStyles.headingTextStyle.copyWith(fontSize: 16),
+                style: AppStyles.headingTextStyle.copyWith(
+                  fontSize: 16,
+                  color:
+                      Colors.blue.shade900, // Konsisten dengan Task Description
+                ),
               ),
               SizedBox(height: 8),
               Container(
@@ -81,25 +85,38 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreens> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: const Color.fromARGB(255, 208, 208, 208),
+                    color: Colors
+                        .blue
+                        .shade100, // Warna border sama dengan description
                     width: 1.2,
                   ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.blue.withOpacity(0.05),
-                      blurRadius: 3,
+                      blurRadius: 8,
                       offset: Offset(0, 4),
                     ),
                   ],
                 ),
                 child: TextField(
                   controller: _titleController,
-                  style: AppStyles.normalTextStyle.copyWith(fontSize: 14),
+                  style: AppStyles.normalTextStyle.copyWith(
+                    fontSize: 14,
+                    color: Colors
+                        .blue
+                        .shade900, // Warna teks sama dengan description
+                  ),
                   decoration: InputDecoration(
                     hintText: 'Enter task title',
                     hintStyle: TextStyle(color: Colors.grey.shade500),
                     border: InputBorder.none,
-                    prefixIcon: Icon(Icons.title, size: 20),
+                    prefixIcon: Icon(
+                      Icons.title,
+                      color: Colors
+                          .blue
+                          .shade400, // Warna ikon sama dengan description
+                      size: 20,
+                    ),
                   ),
                 ),
               ),

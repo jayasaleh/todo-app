@@ -4,6 +4,7 @@ import 'package:to_do/features/task_management/presentation/screens/add_task_scr
 import 'package:to_do/features/task_management/presentation/screens/all_task_screens.dart';
 import 'package:to_do/features/task_management/presentation/screens/completed_task_screens.dart';
 import 'package:to_do/features/task_management/presentation/screens/incomplete_task_screens.dart';
+import 'package:to_do/utils/app_styles.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,8 +16,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-
   int currentIndex = 0;
+
   @override
   void initState() {
     _tabController = TabController(length: 5, vsync: this);
@@ -35,7 +36,8 @@ class _MainScreenState extends State<MainScreen>
     return Scaffold(
       body: TabBarView(
         controller: _tabController,
-        children: [
+        physics: const NeverScrollableScrollPhysics(), // Disable swipe
+        children: const [
           AllTaskScreens(),
           IncompleteTaskScreens(),
           AddTaskScreens(),
@@ -43,43 +45,144 @@ class _MainScreenState extends State<MainScreen>
           AccountsScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (value) {
-          setState(() {
-            currentIndex = value;
-          });
-        },
-        iconSize: 25.0,
-        elevation: 5.0,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            activeIcon: Icon(Icons.home),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (value) {
+            setState(() {
+              currentIndex = value;
+            });
+          },
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: const Color.fromRGBO(21, 101, 192, 1),
+          unselectedItemColor: Colors.grey.shade600,
+          selectedLabelStyle: AppStyles.normalTextStyle.copyWith(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dangerous_outlined),
-            label: 'Incomplete',
-            activeIcon: Icon(Icons.dangerous_outlined),
+          unselectedLabelStyle: AppStyles.normalTextStyle.copyWith(
+            fontSize: 12,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Task',
-            activeIcon: Icon(Icons.add),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_box_outlined),
-            label: 'Completed',
-            activeIcon: Icon(Icons.check_box_outlined),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Account',
-            activeIcon: Icon(Icons.person_outline),
-          ),
-        ],
+          items: [
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: currentIndex == 0
+                      ? Colors.blue.shade100
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.home_outlined),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.home),
+              ),
+              label: 'All Tasks',
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: currentIndex == 1
+                      ? Colors.blue.shade100
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.pending_actions_outlined),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.pending_actions),
+              ),
+              label: 'Overdue',
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: currentIndex == 2
+                      ? Colors.blue.shade100
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.add_outlined),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.add),
+              ),
+              label: 'Add Task',
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: currentIndex == 3
+                      ? Colors.blue.shade100
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.check_circle_outline_outlined),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.check_circle),
+              ),
+              label: 'Completed',
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: currentIndex == 4
+                      ? Colors.blue.shade100
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.person_outline_outlined),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.person),
+              ),
+              label: 'Account',
+            ),
+          ],
+        ),
       ),
     );
   }

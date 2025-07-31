@@ -59,7 +59,7 @@ class _TaskItemState extends ConsumerState<TaskItem> {
     final isComplete = widget.task.isComplete;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
@@ -81,26 +81,29 @@ class _TaskItemState extends ConsumerState<TaskItem> {
         children: [
           // Checkbox - lebih kompak
           SizedBox(
-            width: 24, // Lebar tetap untuk checkbox
-            child: Checkbox(
-              value: isComplete,
-              activeColor: Colors.green,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
+            width: 40, // Lebar tetap untuk checkbox
+            child: Transform.scale(
+              scale: 1.5,
+              child: Checkbox(
+                value: isComplete,
+                activeColor: Colors.green,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                onChanged: (bool? value) {
+                  if (value == null) return;
+                  final userId = ref.watch(currentUserProvider)!.uid;
+                  ref
+                      .read(firestoreRepositoryProvider)
+                      .updateTaskCompletion(
+                        userId: userId,
+                        taskId: widget.task.id,
+                        isComplete: value,
+                      );
+                },
               ),
-              onChanged: (bool? value) {
-                if (value == null) return;
-                final userId = ref.watch(currentUserProvider)!.uid;
-                ref
-                    .read(firestoreRepositoryProvider)
-                    .updateTaskCompletion(
-                      userId: userId,
-                      taskId: widget.task.id,
-                      isComplete: value,
-                    );
-              },
             ),
           ),
           const SizedBox(width: 8), // Mengurangi jarak dari checkbox
@@ -211,6 +214,7 @@ class _TaskItemState extends ConsumerState<TaskItem> {
           Column(
             children: [
               // Edit
+              const SizedBox(height: 15),
               InkWell(
                 borderRadius: BorderRadius.circular(20),
                 onTap: () {

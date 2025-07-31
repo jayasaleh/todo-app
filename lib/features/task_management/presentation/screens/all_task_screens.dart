@@ -26,10 +26,11 @@ class _AllTaskScreensState extends ConsumerState<AllTaskScreens> {
       state.showAlertDialogError(context);
     });
     SizeConfig.init(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Task Today',
+          'My Tasks Today',
           style: AppStyles.headingTextStyle.copyWith(
             color: Colors.white,
             fontSize: 20,
@@ -40,8 +41,12 @@ class _AllTaskScreensState extends ConsumerState<AllTaskScreens> {
         value: taskAsyncValue,
         data: (tasks) {
           return tasks.isEmpty
-              ? const Center(child: Text('No task yet...'))
+              ? _buildEmptyState()
               : ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
                   itemBuilder: (context, index) {
                     final task = tasks[index];
                     return TaskItem(task);
@@ -49,6 +54,51 @@ class _AllTaskScreensState extends ConsumerState<AllTaskScreens> {
                   itemCount: tasks.length,
                 );
         },
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: SizeConfig.getProportionateScreenHeight(150),
+            width: SizeConfig.getProportionateScreenWidth(150),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.task_outlined,
+              size: 80,
+              color: Colors.blue.shade300,
+            ),
+          ),
+          SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
+          Text(
+            'No Tasks Yet',
+            style: AppStyles.headingTextStyle.copyWith(
+              fontSize: 22,
+              color: Colors.blue.shade800,
+            ),
+          ),
+          SizedBox(height: SizeConfig.getProportionateScreenHeight(10)),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.getProportionateScreenWidth(40),
+            ),
+            child: Text(
+              'You don\'t have any tasks yet. Tap the + button to add your first task!',
+              textAlign: TextAlign.center,
+              style: AppStyles.normalTextStyle.copyWith(
+                color: Colors.grey.shade600,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

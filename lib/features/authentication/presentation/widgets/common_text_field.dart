@@ -8,7 +8,7 @@ class CommonTextField extends StatelessWidget {
     required this.textInputType,
     this.obscureText = false, // Ubah dari bool? ke bool dengan default false
     required this.controller, // Ubah dari optional ke required
-    this.suffixIcon,
+    this.suffixIcon, required Icon prefixIcon,
   });
 
   final String hintText;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:to_do/common_widgets/async_value_ui.dart';
+import 'package:to_do/features/authentication/presentation/controllers/auth_controller.dart';
 import 'package:to_do/features/authentication/presentation/widgets/common_text_field.dart';
-import 'package:to_do/routes/routes.dart';
 import 'package:to_do/utils/app_styles.dart';
 import 'package:to_do/utils/size_config.dart';
-import 'package:to_do/features/authentication/presentation/controllers/auth_controller.dart';
+import 'package:to_do/routes/routes.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -19,21 +19,44 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _emailEditingController = TextEditingController();
   final _passwordEditingController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   bool isChecked = false;
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   void _validateDetails() {
     String email = _emailEditingController.text.trim();
     String password = _passwordEditingController.text.trim();
+    String confirmPassword = _confirmPasswordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Please fill all fields',
             style: AppStyles.normalTextStyle.copyWith(color: Colors.white),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Passwords do not match',
+            style: AppStyles.normalTextStyle.copyWith(color: Colors.white),
+          ),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -48,198 +71,197 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   void dispose() {
     _emailEditingController.dispose();
     _passwordEditingController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig.init(context); // Initialize SizeConfig
+    SizeConfig.init(context);
     final state = ref.watch(authControllerProvider);
     ref.listen<AsyncValue>(authControllerProvider, (_, state) {
       state.showAlertDialogError(context);
     });
 
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(
-            SizeConfig.getProportionateScreenWidth(10),
-            SizeConfig.getProportionateScreenHeight(50),
-            SizeConfig.getProportionateScreenWidth(10),
-            0,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Register',
+          style: AppStyles.headingTextStyle.copyWith(
+            fontSize: 20,
+            color: Colors.white,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'Create to your account ',
-                  style: AppStyles.titleTextStyle,
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(25)),
-                CommonTextField(
-                  hintText: 'Enter Email...',
-                  textInputType: TextInputType.emailAddress,
-                  controller: _emailEditingController,
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(10)),
-                CommonTextField(
-                  hintText: 'Enter Password...',
-                  textInputType: TextInputType.text,
-                  obscureText: _obscurePassword,
-                  controller: _passwordEditingController,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(15)),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                    Text(
-                      'I agree to the terms and conditions',
-                      style: AppStyles.normalTextStyle,
-                    ),
-                  ],
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(25)),
-                InkWell(
-                  onTap: _validateDetails,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: SizeConfig.getProportionateScreenHeight(50),
-                    width: SizeConfig.screenWidth,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 9, 66, 255),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: state.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            'Register',
-                            style: AppStyles.titleTextStyle.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(15)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: SizeConfig.getProportionateScreenHeight(1),
-                      width: SizeConfig.screenWidth * 0.4,
-                      decoration: const BoxDecoration(color: Colors.grey),
-                    ),
-                    SizedBox(height: SizeConfig.getProportionateScreenWidth(5)),
-                    Text('OR', style: AppStyles.normalTextStyle),
-                    SizedBox(height: SizeConfig.getProportionateScreenWidth(5)),
-                    Container(
-                      height: SizeConfig.getProportionateScreenHeight(1),
-                      width: SizeConfig.screenWidth * 0.4,
-                      decoration: const BoxDecoration(color: Colors.grey),
-                    ),
-                  ],
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(15)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: SizeConfig.getProportionateScreenHeight(40),
-                      width: SizeConfig.screenWidth * 0.25,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.google,
-                        color: Color.fromARGB(255, 238, 110, 36),
-                      ),
-                    ),
-                    Container(
-                      height: SizeConfig.getProportionateScreenHeight(40),
-                      width: SizeConfig.screenWidth * 0.25,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.apple,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Container(
-                      height: SizeConfig.getProportionateScreenHeight(40),
-                      width: SizeConfig.screenWidth * 0.25,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      child: const FaIcon(
-                        FontAwesomeIcons.facebook,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: SizeConfig.getProportionateScreenHeight(30)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Already have an account? ',
-                      style: AppStyles.normalTextStyle,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // Navigate to Sign Up screen
-                        context.goNamed(AppRoutes.login.name);
-                      },
-                      child: Text(
-                        'Login',
-                        style: AppStyles.normalTextStyle.copyWith(
-                          color: const Color.fromARGB(255, 9, 66, 255),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.getProportionateScreenWidth(20),
+          vertical: SizeConfig.getProportionateScreenHeight(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
+            Text(
+              'Create Account',
+              style: AppStyles.headingTextStyle.copyWith(
+                fontSize: 24,
+                color: Colors.blue.shade900,
+              ),
             ),
-          ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(5)),
+            Text(
+              'Fill in your details to continue',
+              style: AppStyles.normalTextStyle.copyWith(
+                color: Colors.grey.shade600,
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(30)),
+
+            // Email Field
+            Text(
+              'Email',
+              style: AppStyles.headingTextStyle.copyWith(
+                fontSize: 16,
+                color: Colors.blue.shade900,
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(8)),
+            CommonTextField(
+              hintText: 'Enter your email',
+              textInputType: TextInputType.emailAddress,
+              controller: _emailEditingController,
+              prefixIcon: Icon(
+                Icons.email,
+                color: Colors.blue.shade400,
+                size: 20,
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
+
+            // Password Field
+            Text(
+              'Password',
+              style: AppStyles.headingTextStyle.copyWith(
+                fontSize: 16,
+                color: Colors.blue.shade900,
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(8)),
+            CommonTextField(
+              hintText: 'Enter your password',
+              textInputType: TextInputType.text,
+              obscureText: _obscurePassword,
+              controller: _passwordEditingController,
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.blue.shade400,
+                size: 20,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey.shade600,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscurePassword = !_obscurePassword;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
+
+            // Confirm Password Field
+            Text(
+              'Confirm Password',
+              style: AppStyles.headingTextStyle.copyWith(
+                fontSize: 16,
+                color: Colors.blue.shade900,
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(8)),
+            CommonTextField(
+              hintText: 'Confirm your password',
+              textInputType: TextInputType.text,
+              obscureText: _obscureConfirmPassword,
+              controller: _confirmPasswordController,
+              prefixIcon: Icon(
+                Icons.lock_outline,
+                color: Colors.blue.shade400,
+                size: 20,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureConfirmPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: Colors.grey.shade600,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(15)),
+
+            // Register Button
+            InkWell(
+              borderRadius: BorderRadius.circular(15),
+              onTap: _validateDetails,
+              child: Container(
+                alignment: Alignment.center,
+                height: SizeConfig.getProportionateScreenHeight(50),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade800,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: state.isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text(
+                        'Register',
+                        style: AppStyles.titleTextStyle.copyWith(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+              ),
+            ),
+            SizedBox(height: SizeConfig.getProportionateScreenHeight(25)),
+
+            // Login Link
+            Center(
+              child: RichText(
+                text: TextSpan(
+                  text: 'Already have an account? ',
+                  style: AppStyles.normalTextStyle,
+                  children: [
+                    TextSpan(
+                      text: 'Login',
+                      style: AppStyles.normalTextStyle.copyWith(
+                        color: Colors.blue.shade800,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.goNamed(AppRoutes.login.name);
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

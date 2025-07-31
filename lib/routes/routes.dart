@@ -8,7 +8,7 @@ import 'package:to_do/routes/go_router_refresh_stream.dart';
 
 part 'routes.g.dart';
 
-enum AppRoutes { main, login, register }
+enum AppRoutes { splash, main, login, register }
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;

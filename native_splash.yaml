@@ -1,0 +1,9 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#FFFFFF" # Warna latar belakang splash screen
+  image: assets/img/logo_todo.png # Lokasi gambar logo Anda
+
+android_12:
+color: "FFFFFF"
+image: assets/img/logo_todo.png
