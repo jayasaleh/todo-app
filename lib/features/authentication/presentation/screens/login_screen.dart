@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:to_do/common_widgets/async_value_ui.dart';
 import 'package:to_do/features/authentication/presentation/controllers/auth_controller.dart';
@@ -212,32 +211,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton({required IconData icon, required Color color}) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(50),
-      onTap: () {
-        // Add social login functionality
-      },
-      child: Container(
-        height: SizeConfig.getProportionateScreenHeight(50),
-        width: SizeConfig.getProportionateScreenWidth(50),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              blurRadius: 10,
-              spreadRadius: 2,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Center(child: FaIcon(icon, color: color, size: 24)),
       ),
     );
   }

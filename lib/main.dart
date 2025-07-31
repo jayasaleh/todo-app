@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do/firebase_options.dart';
 import 'package:to_do/routes/routes.dart';
+import 'package:to_do/utils/size_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SizeConfig.init(context);
     return MaterialApp.router(
       routerConfig: ref.watch(goRouterProvider),
       title: 'To Do App',

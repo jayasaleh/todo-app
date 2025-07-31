@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:to_do/common_widgets/async_value_ui.dart';
 import 'package:to_do/features/authentication/data/auth_repository.dart';
 import 'package:to_do/features/task_management/domain/task.dart';
@@ -47,6 +48,18 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreens> {
     final state = ref.watch(firestoreControllerProvider);
     ref.listen<AsyncValue>(firestoreControllerProvider, (_, state) {
       state.showAlertDialogError(context);
+      if (!state.isLoading && !state.hasError) {
+        Fluttertoast.showToast(
+          msg: "Task Added Successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.green[400],
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        _titleController.clear();
+        _descriptionController.clear();
+      }
     });
 
     return Scaffold(
@@ -232,6 +245,27 @@ class _AddTaskScreenState extends ConsumerState<AddTaskScreens> {
                   final description = _descriptionController.text.trim();
                   String priority = _priorities[_selectedPriorities];
 
+                  if (title.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: "Task title cannot be empty!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                    );
+                    return;
+                  }
+
+                  if (description.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: "Task description cannot be empty!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                    );
+                    return;
+                  }
                   final createTask = Task(
                     title: title,
                     description: description,
