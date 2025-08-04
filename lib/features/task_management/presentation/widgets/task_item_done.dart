@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do/features/task_management/domain/task.dart';
+import 'package:to_do/features/task_management/presentation/widgets/delete_task_dialog.dart';
 import 'package:to_do/utils/app_styles.dart';
 import 'package:to_do/utils/size_config.dart';
 
@@ -73,7 +74,7 @@ class _TaskItemDoneState extends ConsumerState<TaskItemDone> {
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Checkbox - lebih kompak
           const SizedBox(width: 8),
@@ -178,6 +179,37 @@ class _TaskItemDoneState extends ConsumerState<TaskItemDone> {
                 ),
               ],
             ),
+          ),
+
+          Column(
+            children: [
+              // Delete
+              InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () {
+                  showDeleteTaskDialog(context, widget.task, ref);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade400,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.red.withOpacity(0.12),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

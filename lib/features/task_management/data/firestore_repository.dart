@@ -55,6 +55,7 @@ class FirestoreRepository {
         .doc(userId)
         .collection('tasks')
         .where('isComplete', isEqualTo: true)
+        .orderBy('date', descending: true)
         .snapshots()
         .map(
           (querySnapshot) => querySnapshot.docs
@@ -77,20 +78,14 @@ class FirestoreRepository {
   }
 
   Stream<List<Task>> loadIncompletedTasks(String userId) async* {
-    // 1. Get the current time from the server
     final serverTimestamp = await _serverNow();
 
-    // 2. Convert the Firestore Timestamp to a Dart DateTime object
     final serverDateTime = serverTimestamp.toDate();
-
-    // 3. Calculate the beginning of the current day (midnight)
     final startOfToday = DateTime(
       serverDateTime.year,
       serverDateTime.month,
-      serverDateTime.day, // Sets time to 00:00:00
+      serverDateTime.day,
     );
-
-    // 4. Convert the "start of day" DateTime back to a Firestore Timestamp
     final startOfTodayTimestamp = Timestamp.fromDate(startOfToday);
 
     // 5. Use the "start of day" timestamp in your query
