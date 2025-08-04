@@ -126,29 +126,31 @@ class _UpdateTaskDialogContentState extends State<_UpdateTaskDialogContent> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 208, 208, 208),
-                    width: 1.2,
-                  ),
+                  border: Border.all(color: Colors.blue.shade100, width: 1.2),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.blue.withOpacity(0.05),
-                      blurRadius: 3,
+                      blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
                 child: TextField(
-                  // Mengganti TextFormField menjadi TextField
                   controller: _titleController,
-                  style: AppStyles.normalTextStyle.copyWith(fontSize: 14),
+                  style: AppStyles.normalTextStyle.copyWith(
+                    fontSize: 14,
+                    color: Colors.blue.shade900,
+                  ),
                   decoration: InputDecoration(
                     hintText: 'Enter task title',
                     hintStyle: TextStyle(color: Colors.grey.shade500),
                     border: InputBorder.none,
-                    prefixIcon: const Icon(Icons.title, size: 20),
+                    prefixIcon: Icon(
+                      Icons.title,
+                      color: Colors.blue.shade400,
+                      size: 20,
+                    ),
                   ),
-                  // Validator telah dihapus
                 ),
               ),
               SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
@@ -174,7 +176,6 @@ class _UpdateTaskDialogContentState extends State<_UpdateTaskDialogContent> {
                   ],
                 ),
                 child: TextField(
-                  // Mengganti TextFormField menjadi TextField
                   controller: _descriptionController,
                   style: AppStyles.normalTextStyle.copyWith(
                     fontSize: 14,
@@ -191,7 +192,6 @@ class _UpdateTaskDialogContentState extends State<_UpdateTaskDialogContent> {
                       size: 20,
                     ),
                   ),
-                  // Validator telah dihapus
                 ),
               ),
               SizedBox(height: SizeConfig.getProportionateScreenHeight(20)),
